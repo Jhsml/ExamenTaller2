@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Tesis</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        form { margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+
+    <h2>Insertar Tesista</h2>
+    <form action="guardar.php" method="POST">
+        <input type="text" name="apellido" placeholder="apellido" required><br>
+        <input type="text" name="nombre" placeholder="nombre" required><br>
+        <input type="text" name="dni" placeholder="dni" required><br>
+        <input type="number" name="escuela_pro" placeholder="escuela_pro" required><br>
+        <input type="checkbox" name="estado" checked> estado<br>
+        <input type="submit" value="Insertar">
+    </form>
+
+
+
+
+    <h2>Actualizar/Eliminar Tesis</h2>
+    <form action="actualizar.php" method="POST">
+        <input type="number" name="id" placeholder="ID" required><br>
+        <input type="text" name="apelido" placeholder="apelido" required><br>
+        <input type="text" name="nombre" placeholder="nombre" required><br>
+        <input type="text" name="dni" placeholder="dni" required><br>
+        <input type="number" name="escuela_pro" placeholder="escuela_pro" required><br>
+        <input type="checkbox" name="estado" checked> estado<br>
+        <input type="submit" name="actualizar" value="Actualizar">
+    </form>
+    <form action="eliminar.php" method="POST">
+        <input type="number" name="id" placeholder="ID" required><br>
+        <input type="submit" value="Eliminar" onclick="return confirm('¿Seguro que quieres eliminar?');">
+    </form>
+
+    <h2>Lista de tesistas</h2>
+    <table>
+        <tr>
+            <th>apelido</th>
+            <th>nombre</th>
+            <th>dni</th>
+            <th>escuela_pro</th>
+            <th>estado</th>
+        </tr>
+        
+        <?php
+        include 'conexion.php';
+        $result = $conn->query("SELECT * FROM tesista");
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $row['id'] . "</td>";
+                echo "<td>" . $row['apellido'] . "</td>";
+                echo "<td>" . $row['nombre'] . "</td>";
+                echo "<td>" . $row['dni'] . "</td>";
+                echo "<td>" . $row['escuela_pro'] . "</td>";
+                echo "<td>" . ($row['estado'] ? 'Sí' : 'No') . "</td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='8'>No hay libros registrados</td></tr>";
+        }
+        $conn->close();
+        ?>
+    </table>
+</body>
+</html>
